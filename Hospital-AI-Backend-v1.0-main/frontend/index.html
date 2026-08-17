@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital AI - Admin Dashboard</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Supabase config meta (fill these or provide env-config.js to set window.SUPABASE_URL / window.SUPABASE_KEY) -->
+    <meta name="supabase-url" content="">
+    <meta name="supabase-key" content="">
+</head>
+<body class="light-theme">
+    <!-- App Container -->
+    <div class="app-container">
+        
+        <!-- Left Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-hospital-user"></i>
+                </div>
+                <div class="logo-text">
+                    <h2>Hospital <span>AI</span></h2>
+                    <p>Admin Operations</p>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="nav-item active" data-target="dashboard">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span>Dashboard</span>
+                    </li>
+                    <li class="nav-item" data-target="appointments">
+                        <i class="fa-solid fa-calendar-check"></i>
+                        <span>Appointments</span>
+                    </li>
+                    <li class="nav-item" data-target="patients">
+                        <i class="fa-solid fa-users"></i>
+                        <span>Patients</span>
+                    </li>
+                    <li class="nav-item" data-target="doctors">
+                        <i class="fa-solid fa-user-md"></i>
+                        <span>Doctors</span>
+                    </li>
+                    <li class="nav-item" data-target="settings">
+                        <i class="fa-solid fa-sliders"></i>
+                        <span>Settings</span>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="sync-status">
+                    <span class="pulse-dot"></span>
+                    <span id="sync-text">Sync: Live (10s)</span>
+                </div>
+                <p class="app-ver">v1.2.0</p>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="main-content">
+            
+            <!-- Top Navbar -->
+            <header class="top-nav">
+                <div class="header-title">
+                    <h1 id="page-title">Dashboard Overview</h1>
+                    <p class="current-date" id="live-date">Sunday, August 2, 2026</p>
+                </div>
+                
+                <div class="header-actions">
+                    <button class="btn btn-refresh" id="theme-toggle-btn" title="Toggle Light/Dark Theme">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+                    <button class="btn btn-refresh" id="refresh-btn" title="Force Refresh Data">
+                        <i class="fa-solid fa-rotate"></i>
+                    </button>
+                    <div class="user-profile">
+                        <div class="profile-avatar">AD</div>
+                        <div class="profile-info">
+                            <h4>Administrator</h4>
+                            <p>Super User</p>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Metrics Cards Grid (Includes completed, patients, and revenue) -->
+            <section class="metrics-grid">
+                <div class="metric-card bg-today">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-calendar-day"></i>
+                    </div>
+                    <div class="card-info">
+                        <h3>Today's Bookings</h3>
+                        <p class="metric-value" id="stat-today">0</p>
+                        <span class="metric-trend">Active appointments</span>
+                    </div>
+                </div>
+
+                <div class="metric-card bg-upcoming">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-calendar-days"></i>
+                    </div>
+                    <div class="card-info">
+                        <h3>Upcoming</h3>
+                        <p class="metric-value" id="stat-upcoming">0</p>
+                        <span class="metric-trend">Future scheduling</span>
+                    </div>
+                </div>
+
+                <div class="metric-card bg-cancelled">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-calendar-xmark"></i>
+                    </div>
+                    <div class="card-info">
+                        <h3>Cancelled</h3>
+                        <p class="metric-value" id="stat-cancelled">0</p>
+                        <span class="metric-trend">Soft-deleted entries</span>
+                    </div>
+                </div>
+
+                <div class="metric-card bg-completed">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                    <div class="card-info">
+                        <h3>Completed</h3>
+                        <p class="metric-value" id="stat-completed">0</p>
+                        <span class="metric-trend">Past or done sessions</span>
+                    </div>
+                </div>
+
+                <div class="metric-card bg-patients">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <div class="card-info">
+                        <h3>Unique Patients</h3>
+                        <p class="metric-value" id="stat-patients">0</p>
+                        <span class="metric-trend">Total patient pool</span>
+                    </div>
+                </div>
+
+                <div class="metric-card bg-revenue">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-wallet"></i>
+                    </div>
+                    <div class="card-info">
+                        <h3>Revenue Estimate</h3>
+                        <p class="metric-value" id="stat-revenue">$0</p>
+                        <span class="metric-trend">Placeholder estimate</span>
+                    </div>
+                </div>
+
+                <div class="metric-card bg-doctors">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-user-doctor"></i>
+                    </div>
+                    <div class="card-info">
+                        <h3>Active Doctors</h3>
+                        <p class="metric-value" id="stat-doctors">0</p>
+                        <span class="metric-trend">On-call directory</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Viewport Panels -->
+            <section class="panels-container">
+                
+                <!-- 1. DASHBOARD OVERVIEW PANEL -->
+                <div class="panel active" id="panel-dashboard">
+                    <div class="panel-header">
+                        <h2>Recently Booked Appointments</h2>
+                        <button class="btn btn-primary" id="view-all-appts-btn">View All</button>
+                    </div>
+                    
+                    <!-- Chart Placeholder Grid -->
+                    <div class="charts-placeholder-grid">
+                        <div class="chart-card">
+                            <h3><i class="fa-solid fa-chart-line"></i> Booking Trends</h3>
+                            <div class="chart-illustration">
+                                <div class="bar-chart">
+                                    <div class="bar" style="height: 40%"><span>Mon</span></div>
+                                    <div class="bar" style="height: 65%"><span>Tue</span></div>
+                                    <div class="bar" style="height: 50%"><span>Wed</span></div>
+                                    <div class="bar" style="height: 85%"><span>Thu</span></div>
+                                    <div class="bar" style="height: 70%"><span>Fri</span></div>
+                                    <div class="bar" style="height: 30%"><span>Sat</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <h3><i class="fa-solid fa-chart-pie"></i> Specialty Breakdown</h3>
+                            <div class="donut-chart-placeholder">
+                                <div class="donut-ring"></div>
+                                <div class="donut-legend">
+                                    <div class="legend-item"><span class="legend-color card-icon" style="background-color: var(--primary)"></span> Cardiology (45%)</div>
+                                    <div class="legend-item"><span class="legend-color card-icon" style="background-color: var(--success)"></span> Pediatrics (35%)</div>
+                                    <div class="legend-item"><span class="legend-color card-icon" style="background-color: var(--info)"></span> Gen Medicine (20%)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table" id="recent-table">
+                            <thead>
+                                <tr>
+                                    <th>Appointment ID</th>
+                                    <th>Patient</th>
+                                    <th>Mobile</th>
+                                    <th>Doctor</th>
+                                    <th>Department</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Loaded dynamically -->
+                            </tbody>
+                        </table>
+                        <div class="empty-state hidden" id="recent-empty">
+                            <i class="fa-solid fa-folder-open"></i>
+                            <p>No recent appointments found</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. APPOINTMENTS PANEL -->
+                <div class="panel" id="panel-appointments">
+                    <div class="filter-bar">
+                        <div class="filter-inputs">
+                            <div class="search-box">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" id="search-input" placeholder="Search Patient, Mobile, Doctor, ID...">
+                            </div>
+                            <div class="select-box">
+                                <i class="fa-solid fa-user-md"></i>
+                                <select id="filter-doctor">
+                                    <option value="">All Doctors</option>
+                                    <!-- Dynamic -->
+                                </select>
+                            </div>
+                            <div class="select-box">
+                                <i class="fa-solid fa-stethoscope"></i>
+                                <select id="filter-dept">
+                                    <option value="">All Departments</option>
+                                    <option value="Cardiology">Cardiology</option>
+                                    <option value="Pediatrics">Pediatrics</option>
+                                    <option value="General Medicine">General Medicine</option>
+                                </select>
+                            </div>
+                            <div class="date-box">
+                                <i class="fa-solid fa-calendar"></i>
+                                <input type="date" id="filter-date">
+                            </div>
+                            <div class="select-box">
+                                <i class="fa-solid fa-filter"></i>
+                                <select id="filter-status">
+                                    <option value="">All Statuses</option>
+                                    <option value="Booked">Booked</option>
+... (file continues)
