@@ -3,10 +3,10 @@ services:
     name: hospital-ai-backend
     runtime: python
     buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
+    startCommand: gunicorn -k uvicorn.workers.UvicornWorker app:app --bind 0.0.0.0:$PORT
     envVars:
       - key: DATABASE_URL
-        value: postgresql://postgres:Akhilesh12%40@db.blsehhqrmbpwkplitzsq.supabase.co:5432/postgres
+        value: postgresql://postgres.blsehhqrmbpwkplitzsq:Akhilesh12%40@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres
       - key: HOSPITAL_NAME
         value: ABC Hospital
       - key: TIMEZONE
