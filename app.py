@@ -284,3 +284,14 @@ if __name__ == "__main__":
     import uvicorn
     logger.info("Starting uvicorn server...")
     uvicorn.run("app:app", host="127.0.0.1", port=8000, reload=True)
+
+
+@app.get("/", include_in_schema=False)
+def root():
+    """Return a service status at the primary URL."""
+    return {
+        "success": True,
+        "message": "Hospital AI Appointment Manager API is running",
+        "docs": "/docs",
+        "health": "/health",
+    }
