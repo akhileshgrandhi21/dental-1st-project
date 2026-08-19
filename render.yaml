@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: hospital-ai-backend
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        value: postgresql://postgres:Akhilesh12%40@db.blsehhqrmbpwkplitzsq.supabase.co:5432/postgres
+      - key: HOSPITAL_NAME
+        value: ABC Hospital
+      - key: TIMEZONE
+        value: Asia/Kolkata
+      - key: DEFAULT_SLOT_DURATION
+        value: "30"
+      - key: VERSION
+        value: "1.0.0"
+      - key: ENVIRONMENT
+        value: production
+      - key: CORS_ORIGINS
+        value: "*"
+    healthCheckPath: /health
+    autoDeploy: true
