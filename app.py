@@ -32,7 +32,11 @@ logger = logging.getLogger(__name__)
 # Initialize database tables and seed initial data
 from database.database import init_db, SessionLocal
 logger.info("Initializing database and seeding default data...")
-init_db()
+try:
+    init_db()
+    logger.info("Database initialized successfully.")
+except Exception as e:
+    logger.error(f"Database initialization failed (app will still start): {e}")
 
 from routes.doctor_routes import router as doctor_router
 from routes.booking_routes import router as booking_router
